@@ -3,7 +3,6 @@ package useCases
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"go-auth/core/entities"
 	"go-auth/core/interfaces"
 	error2 "go-auth/core/useCases/error"
@@ -43,6 +42,5 @@ func (login Login) Execute(email string, password string) (entities.User, *strin
 		return user, nil, errToken
 	}
 
-	fmt.Println(user)
 	return user, &token, nil
 }

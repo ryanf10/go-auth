@@ -1,14 +1,12 @@
 package middlewares
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-auth/core/entities"
 	"net/http"
 )
 
 func RoleMiddleware(rolesName []string) gin.HandlerFunc {
-	fmt.Println("woiii")
 	return func(c *gin.Context) {
 		value, exists := c.Get("user")
 		user := value.(entities.User)

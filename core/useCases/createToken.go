@@ -1,7 +1,6 @@
 package useCases
 
 import (
-	"fmt"
 	"go-auth/core/entities"
 	error2 "go-auth/core/useCases/error"
 	"net/http"
@@ -18,7 +17,6 @@ type TokenClaim struct {
 }
 
 func (createToken CreateToken) Execute(user entities.User) (string, *error2.RequestError) {
-	fmt.Println(user)
 	claims := TokenClaim{
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
