@@ -13,6 +13,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		splitToken := strings.Split(reqToken, "Bearer ")
 		if len(splitToken) < 2 {
 			c.AbortWithStatusJSON(http.StatusForbidden, "Unauthorized")
+			return
 		}
 		reqToken = splitToken[1]
 		user, err := useCases.VerifyToken{}.Execute(reqToken)
