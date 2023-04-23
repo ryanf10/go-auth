@@ -24,5 +24,5 @@ CREATE TABLE `role` (
 ALTER TABLE `user` ADD CONSTRAINT `user_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- RoleSeeder
-INSERT INTO Role VALUE ('49b1d442-f912-4ef7-aa88-e889be7b6bda ', 'user');
-INSERT INTO Role VALUE ('dec578b7-9785-4acd-9ddc-9a2d2ddabb26', 'admin');
+INSERT INTO role VALUES ('49b1d442-f912-4ef7-aa88-e889be7b6bda', 'user');
+INSERT INTO role VALUES ('dec578b7-9785-4acd-9ddc-9a2d2ddabb26', 'admin');
