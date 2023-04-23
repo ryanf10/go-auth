@@ -6,6 +6,6 @@ import (
 )
 
 type IUserRepository interface {
-	Create(user entities.User) entities.User
+	Create(user entities.User) (entities.User, error)
 	FindOneByEmail(email string) *sql.Row
 }

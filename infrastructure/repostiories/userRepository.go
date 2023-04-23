@@ -18,12 +18,13 @@ func NewUserRepository() *UserRepository {
 	return p
 }
 
-func (repo UserRepository) Create(user entities.User) entities.User {
+func (repo UserRepository) Create(user entities.User) (entities.User, error) {
 	_, err := repo.db.Exec("INSERT INTO user (id, name, email, password, roleId, createdAt) VALUES ( ?, ?, ?, ?, ?, ? )", user.ID, user.Name, user.Email, user.Password, user.RoleId, user.CreatedAt)
 	if err != nil {
 		fmt.Println(err)
+		return user, err
 	}
-	return user
+	return user, nil
 }
 
 func (repo UserRepository) FindOneByEmail(email string) *sql.Row {

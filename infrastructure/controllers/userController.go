@@ -34,7 +34,11 @@ func (userController UserController) Register(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": message})
 		return
 	}
-	user := userController.createUser.Execute(registerForm.Name, registerForm.Email, registerForm.Password)
+	user, err := userController.createUser.Execute(registerForm.Name, registerForm.Email, registerForm.Password)
+	if err != nil {
+		c.AbortWithStatusJSON(err.StatusCode, err.Error())
+		return
+	}
 	c.JSON(http.StatusOK, user)
 
 }

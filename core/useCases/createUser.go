@@ -5,7 +5,9 @@ import (
 	"github.com/google/uuid"
 	"go-auth/core/entities"
 	"go-auth/core/interfaces"
+	error2 "go-auth/core/useCases/error"
 	"golang.org/x/crypto/bcrypt"
+	"net/http"
 	"time"
 )
 
@@ -21,7 +23,7 @@ func NewCreateUser(userRepository interfaces.IUserRepository, roleRepository int
 	return p
 }
 
-func (createUser CreateUser) Execute(name string, email string, password string) entities.User {
+func (createUser CreateUser) Execute(name string, email string, password string) (entities.User, *error2.RequestError) {
 	encyptedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		fmt.Println(err)
@@ -32,5 +34,9 @@ func (createUser CreateUser) Execute(name string, email string, password string)
 	row.Scan(&role.ID, &role.Name)
 
 	newUser := entities.User{ID: uuid.New().String(), Name: name, Email: email, Password: string(encyptedPassword), RoleId: role.ID, Role: role, CreatedAt: time.Now()}
-	return createUser.userRepository.Create(newUser)
+	user, errorCreate := createUser.userRepository.Create(newUser)
+	if errorCreate != nil {
+		return user, &error2.RequestError{http.StatusInternalServerError, errorCreate}
+	}
+	return user, nil
 }
