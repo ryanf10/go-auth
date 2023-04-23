@@ -10,12 +10,14 @@ import (
 )
 
 type CreateUser struct {
-	repository interfaces.IUserRepository
+	userRepository interfaces.IUserRepository
+	roleRepository interfaces.IRoleRepository
 }
 
-func NewCreateUser(repository interfaces.IUserRepository) *CreateUser {
+func NewCreateUser(userRepository interfaces.IUserRepository, roleRepository interfaces.IRoleRepository) *CreateUser {
 	p := new(CreateUser)
-	p.repository = repository
+	p.userRepository = userRepository
+	p.roleRepository = roleRepository
 	return p
 }
 
@@ -24,6 +26,11 @@ func (createUser CreateUser) Execute(name string, email string, password string)
 	if err != nil {
 		fmt.Println(err)
 	}
-	newUser := entities.User{ID: uuid.New().String(), Name: name, Email: email, Password: string(encyptedPassword), CreatedAt: time.Now()}
-	return createUser.repository.Create(newUser)
+	// assing to role 'user'
+	var role entities.Role
+	row := createUser.roleRepository.FindOneByName("user")
+	row.Scan(&role.ID, &role.Name)
+
+	newUser := entities.User{ID: uuid.New().String(), Name: name, Email: email, Password: string(encyptedPassword), RoleId: role.ID, Role: role, CreatedAt: time.Now()}
+	return createUser.userRepository.Create(newUser)
 }

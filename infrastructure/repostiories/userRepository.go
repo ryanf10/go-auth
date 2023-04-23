@@ -19,11 +19,10 @@ func NewUserRepository() *UserRepository {
 }
 
 func (repo UserRepository) Create(user entities.User) entities.User {
-	sql, err := repo.db.Exec("INSERT INTO user (id, name, email, password, roleId, createdAt) VALUES ( ?, ?, ?, ?, 'b0fc999d-5960-4cc9-8549-a5765b959e07', ? )", user.ID, user.Name, user.Email, user.Password, user.CreatedAt)
+	_, err := repo.db.Exec("INSERT INTO user (id, name, email, password, roleId, createdAt) VALUES ( ?, ?, ?, ?, ?, ? )", user.ID, user.Name, user.Email, user.Password, user.RoleId, user.CreatedAt)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(sql.LastInsertId())
 	return user
 }
 

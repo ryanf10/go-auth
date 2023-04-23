@@ -20,7 +20,8 @@ var loginFormValidator = new(forms.LoginFormValidator)
 func NewUserController() *UserController {
 	p := new(UserController)
 	userRepository := repostiories.NewUserRepository()
-	p.createUser = useCases.NewCreateUser(userRepository)
+	roleRepository := repostiories.NewRoleRepository()
+	p.createUser = useCases.NewCreateUser(userRepository, roleRepository)
 	p.login = useCases.NewLogin(userRepository)
 	return p
 }
