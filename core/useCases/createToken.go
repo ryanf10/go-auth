@@ -5,6 +5,7 @@ import (
 	"go-auth/core/entities"
 	error2 "go-auth/core/useCases/error"
 	"net/http"
+	"os"
 	"time"
 )
 import jwt "github.com/golang-jwt/jwt/v5"
@@ -29,7 +30,7 @@ func (createToken CreateToken) Execute(user entities.User) (string, *error2.Requ
 		jwt.SigningMethodHS256,
 		claims,
 	)
-	signedToken, err := token.SignedString([]byte("secret"))
+	signedToken, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
 		return signedToken, &error2.RequestError{http.StatusInternalServerError, err}
 	}

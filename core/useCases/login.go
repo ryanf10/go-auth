@@ -21,7 +21,6 @@ func NewLogin(repository interfaces.IUserRepository) *Login {
 }
 
 func (login Login) Execute(email string, password string) (entities.User, *string, *error2.RequestError) {
-
 	row := login.repository.FindOneByEmail(email)
 	var user entities.User
 	err := row.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.CreatedAt)

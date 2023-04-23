@@ -7,6 +7,7 @@ import (
 	"github.com/joho/godotenv"
 	"go-auth/infrastructure/controllers"
 	"go-auth/infrastructure/controllers/forms"
+	"go-auth/infrastructure/middlewares"
 	"net/http"
 )
 
@@ -24,9 +25,24 @@ func main() {
 		})
 	})
 
-	userController := controllers.NewUserController()
-	r.POST("/register", userController.Register)
-	r.POST("/login", userController.Login)
+	v1 := r.Group("/api/v1")
+	{
+		userController := controllers.NewUserController()
+		v1.POST("/register", userController.Register)
+		v1.POST("/login", userController.Login)
+
+		// auth route
+		auth := v1.Group("/")
+		auth.Use(middlewares.AuthMiddleware())
+		{
+			auth.GET("/private", func(c *gin.Context) {
+				c.JSON(http.StatusOK, gin.H{
+					"status": "success",
+					"data":   gin.H{},
+				})
+			})
+		}
+	}
 
 	err := r.Run()
 	if err != nil {
