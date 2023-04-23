@@ -1,7 +1,11 @@
 package interfaces
 
-import "go-auth/core/entities"
+import (
+	"database/sql"
+	"go-auth/core/entities"
+)
 
 type IUserRepository interface {
-	Create(entities.User) entities.User
+	Create(user entities.User) entities.User
+	FindOneByEmail(email string) *sql.Row
 }

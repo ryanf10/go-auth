@@ -26,6 +26,7 @@ func main() {
 
 	userController := controllers.NewUserController()
 	r.POST("/register", userController.Register)
+	r.POST("/login", userController.Login)
 
 	err := r.Run()
 	if err != nil {
