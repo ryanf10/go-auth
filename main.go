@@ -41,6 +41,20 @@ func main() {
 					"data":   gin.H{},
 				})
 			})
+
+			role := auth.Group("/")
+			{
+				roleAdmin := role.Group("/")
+				roleAdmin.Use(middlewares.RoleMiddleware([]string{"admin"}))
+				{
+					roleAdmin.GET("/private/admin", func(c *gin.Context) {
+						c.JSON(http.StatusOK, gin.H{
+							"status": "success",
+							"data":   gin.H{},
+						})
+					})
+				}
+			}
 		}
 	}
 

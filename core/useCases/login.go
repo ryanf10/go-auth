@@ -1,6 +1,7 @@
 package useCases
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"go-auth/core/entities"
@@ -23,11 +24,15 @@ func NewLogin(repository interfaces.IUserRepository) *Login {
 func (login Login) Execute(email string, password string) (entities.User, *string, *error2.RequestError) {
 	row := login.repository.FindOneByEmail(email)
 	var user entities.User
-	err := row.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.CreatedAt)
+	var role entities.Role
+	err := row.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &role.ID, &role.Name, &user.CreatedAt)
+	user.Role = role
 
 	switch {
-	case err != nil:
+	case err == sql.ErrNoRows:
 		return user, nil, &error2.RequestError{http.StatusForbidden, errors.New("Invalid credentials")}
+	case err != nil:
+		return user, nil, &error2.RequestError{http.StatusInternalServerError, errors.New("Something went wrong, please try again later")}
 	}
 	errCompare := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if errCompare != nil {

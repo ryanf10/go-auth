@@ -8,4 +8,7 @@ type User struct {
 	Email     string    `db:"email" json:"email"`
 	Password  string    `db:"password" json:"-"`
 	CreatedAt time.Time `db:"createdAt" json:"-"`
+	RoleId    string    `db:"roleId" json:"roleId"`
+
+	Role Role `json:"role"`
 }

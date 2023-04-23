@@ -28,6 +28,6 @@ func (repo UserRepository) Create(user entities.User) entities.User {
 }
 
 func (repo UserRepository) FindOneByEmail(email string) *sql.Row {
-	row := repo.db.QueryRow("SELECT id, name, email, password, createdAt FROM user WHERE email = ?", email)
+	row := repo.db.QueryRow("SELECT user.id, user.name, email, password, role.id, role.name, createdAt FROM user, role WHERE user.roleId = role.id AND email = ?", email)
 	return row
 }
