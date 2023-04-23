@@ -15,7 +15,6 @@ func main() {
 	errEnv := godotenv.Load(".env")
 	if errEnv != nil {
 		fmt.Println(errEnv)
-		return
 	}
 	r := gin.Default()
 	binding.Validator = new(forms.DefaultValidator)
