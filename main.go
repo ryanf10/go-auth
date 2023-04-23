@@ -19,11 +19,8 @@ func main() {
 	}
 	r := gin.Default()
 	binding.Validator = new(forms.DefaultValidator)
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+
+	r.GET("/ping", controllers.PingController{}.Ping)
 
 	v1 := r.Group("/api/v1")
 	{
