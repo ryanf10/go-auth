@@ -3,7 +3,6 @@ package repostiories
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"go-auth/core/entities"
 )
 

@@ -2,7 +2,6 @@ package repostiories
 
 import (
 	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 type RoleRepository struct {
