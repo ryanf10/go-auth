@@ -52,6 +52,8 @@ func main() {
 				}
 			}
 		}
+		auth.GET("/posts", middlewares.ReverseProxy("https://jsonplaceholder.typicode.com", true))
+		auth.GET("/get-all-comments", middlewares.ReverseProxy("https://jsonplaceholder.typicode.com/comments", false))
 	}
 
 	err := r.Run()
